@@ -20,7 +20,6 @@ class RefineDataset(Utils):
         """ 
         arr = []
         for file in os.listdir(files_path):
-            video_file = os.path.join(files_path, file)
             bboxes_dir = os.path.join(bboxes_path, re.sub(r"\..*", '', file))
             valences_file = os.path.join(valences_path, re.sub(r"\..*", '.txt', file))
 
@@ -29,14 +28,14 @@ class RefineDataset(Utils):
             # Array from which the dataframe will be built
 
             for bboxes_file in os.listdir(bboxes_dir):
-                bboxes_path = os.path.join(bboxes_dir, bboxes_file)
+                bboxes_file_path = os.path.join(bboxes_dir, bboxes_file)
                 # The frame number is took directly from the bbox file's name
                 frame = int(re.sub(r"\..*", '', bboxes_file)) 
                 
                 valence = valences[frame]
 
                 if not( -0.1 <= valence and valence <= 0.1): # to avoid  only noise
-                    bboxes = self.get_bboxes(bboxes_path)
+                    bboxes = self.get_bboxes(bboxes_file_path)
                     rectangles = [ [tuple(bbox[0]), tuple(bbox[2])] for bbox in bboxes ]
                     
                     arr += [[file, frame, rectangles, valence]]
@@ -46,4 +45,5 @@ class RefineDataset(Utils):
                 
     def load_data(self):
         """ used to load the saved csv in a useful way """
+        pass
     
