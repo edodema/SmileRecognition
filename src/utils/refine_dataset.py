@@ -3,11 +3,13 @@ import os
 from numpy.core.fromnumeric import sort
 import pandas as pd
 import re
+
+from pandas.core.arrays.sparse import dtype
 from src.utils.utils import Utils
 
 class RefineDataset(Utils):
     """ Class used to refine the First Affect-in-the-Wild Challenge  dataset for our purposes """
-    def __init__(self, path):
+    def __init__(self):
         super().__init__()
 
     def refine(self, files_path='datasets/affwild/videos/train', 
@@ -42,14 +44,20 @@ class RefineDataset(Utils):
 
                     if not( -0.1 <= valence and valence <= 0.1): # to avoid  only noise
                         bboxes = self.get_bboxes(bboxes_file_path)
-                        rectangles = [ [tuple(bbox[0]), tuple(bbox[2])] for bbox in bboxes ]
+                        rectangles = [ [list(bbox[0]), list(bbox[2])] for bbox in bboxes ]
                     
-                        arr += [[file, frame, rectangles, valence]]
-
-        df = pd.DataFrame(np.array(arr, dtype=object), columns=['video', 'frame', 'faces', 'valence'])
+                        arr += [[file, frame, rectangles, 0 if valence < 0 else 1]]
+        df = pd.DataFrame(arr, columns=['video', 'frame', 'faces', 'valence'])
         df.to_csv(csv_path)
                 
-    def load_data(self):
+    def load_data(self, path='datasets/data.csv'):
         """ used to load the saved csv in a useful way """
-        pass
+        df = pd.read_csv(path, converters={'faces': eval})
+
+        videos = df['video'].to_numpy()
+        frames = df['frame'].to_numpy()
+        faces = df['faces'].to_numpy()
+        valences = df['valence'].to_numpy()
+        
+        return videos, frames, faces, valences
     

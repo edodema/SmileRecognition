@@ -1,6 +1,11 @@
 from src.utils.refine_dataset import RefineDataset
 
-path = 'datasets/affwild'
-dr = RefineDataset(path)
+dr = RefineDataset()
 
-dr.refine()
+#dr.refine()
+videos, frames, faces, valences = dr.load_data()
+
+print(len(videos))
+print(len(frames))
+print(len(faces))
+print(len(valences))
