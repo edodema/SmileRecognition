@@ -34,14 +34,12 @@ class Utils:
 
         return np.array(bboxes)
 
-    def draw_bboxes_video(self, path, bboxes):
+    def draw_bboxes_video(self, bboxes, path='datasets/affwild/videos/train/105.avi'):
         """ 
         Draw boundary boxes on a video
-
         path: path of the video to play
         bboxes: the whole list of boundary boxes frame per frame
-
-        TODO: fix drawing caused by array nesting 
+        NOTE: It is just too bad, is better to detect them with Viola Jones 
         """
         cap = cv2.VideoCapture(path)
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
@@ -52,9 +50,8 @@ class Utils:
 
                 index = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
                 print(index)
-                if bboxes.get(index):
-                    x,y = bboxes[index]
-                    cv2.rectangle(frame, x, y, (0,255,0), 2)
+                if faces := bboxes.get(index):
+                    for face in faces: cv2.rectangle(frame, tuple(face[0]), tuple(face[1]), (0,255,0), 2)
                 else: pass
 
                 cv2.imshow('Frame', frame)
