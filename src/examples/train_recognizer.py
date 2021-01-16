@@ -21,6 +21,9 @@ for i, file in enumerate(os.listdir(files_path)):
     bboxes, valences, grays = det.get_faces_valence_video(video=video_file, valence_file=valences_file)
     grays_tot += grays
 
+if grays_tot == []: 
+    print("ERROR! There is no data to train.")
+
 lbph = cv2.face.LBPHFaceRecognizer_create()
 eigen = cv2.face.EigenFaceRecognizer_create()
 fisher = cv2.face.FisherFaceRecognizer_create()
