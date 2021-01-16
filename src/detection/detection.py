@@ -65,7 +65,7 @@ class Detection:
                 1. We have detected a face 
                 2. -k <= valence <= k 
                 """
-                k = 0.1
+                k = 0.5
                 index = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
                 if index >= len(valences): continue
                 valence = valences[index]
