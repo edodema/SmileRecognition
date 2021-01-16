@@ -12,7 +12,7 @@ files_path='datasets/affwild/videos/train'
 bboxes_path='datasets/affwild/bboxes/train'
 valences_path='datasets/affwild/annotations/train/valence'
 
-grays_tot = []
+grays_tot, valences_tot = [], []
 
 for i, file in enumerate(os.listdir(files_path)):
     valences_file = os.path.join(valences_path, re.sub(r"\..*", '.txt', file))
@@ -20,6 +20,7 @@ for i, file in enumerate(os.listdir(files_path)):
 
     bboxes, valences, grays = det.get_faces_valence_video(video=video_file, valence_file=valences_file)
     grays_tot += grays
+    valences_tot += valences
 
 if grays_tot == []: 
     print("ERROR! There is no data to train.")
@@ -34,6 +35,8 @@ lbph.train(grays_tot, ids)
 eigen.train(grays_tot, ids)
 fisher.train(grays_tot, ids)
     
+np.savetxt('valences.txt', valences_tot)
+
 lbph.save('datasets/lbph.yml')
 eigen.save('datasets/eigen.yml')
 fisher.save('datasets/fisher.yml')

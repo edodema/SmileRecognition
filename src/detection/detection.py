@@ -44,7 +44,9 @@ class Detection:
         haar: path of the haar feature classifier.
         valence: path of the valence file
         """
-        ret_bboxes, ret_valences, ret_gray = [], [], []
+        img_size = 224
+
+        ret_valences, ret_grays = np.empty((0,), dtype=np.uint8), np.empty((0,img_size, img_size), dtype=np.uint8)
 
         face_cascade = cv2.CascadeClassifier(haar)
         cap = cv2.VideoCapture(video)
@@ -71,15 +73,13 @@ class Detection:
                 valence = valences[index]
 
                 if len(faces) > 0 and not( -k <= valence and valence <= k):
-                    ret_valences += [0 if valence < 0 else 1]
+                    ret_valences = np.append(ret_valences, [0 if valence < 0 else 1])
                     # Get bbox with largest area
-                    bbox = faces[0] if len(faces) == 1 else faces[np.where(faces[:,2]*faces[:,3] == max(list(map(lambda r: r[2]*r[3], faces))))[0]][0]
-                    ret_bboxes += [bbox]
+                    x, y, w, h = faces[0] if len(faces) == 1 else faces[np.where(faces[:,2]*faces[:,3] == max(list(map(lambda r: r[2]*r[3], faces))))[0]][0]
                     # Save gray images for the recognizer
-                    x, y, w, h = bbox 
-                    img = cv2.resize(frame[y:y+h, x:x+w], (224,224))
-                    ret_gray += [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)]  
-    
+                    ret_grays = np.append(ret_grays, [cv2.resize(gray[y:y+h, x:x+w], (img_size, img_size))], axis=0)
+                    
             else: break
+
         cap.release()
-        return ret_bboxes, ret_valences, ret_gray
+        return ret_valences, ret_grays
