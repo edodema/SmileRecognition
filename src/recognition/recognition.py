@@ -5,6 +5,6 @@ class Recognition():
         """ model should LBPH, Eigen, Fisher """
         self.model = model
 
-    
+        
     
         

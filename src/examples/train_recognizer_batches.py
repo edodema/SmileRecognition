@@ -41,4 +41,4 @@ for i, file in enumerate(os.listdir(files_path)):
             else: lbph.update(grays, ids)
 
 np.savetxt('datasets/valences.txt', valences_tot)    
-lbph.save('datasets/lbph.yml')
+lbph.save('datasets/lbph_online.yml')
