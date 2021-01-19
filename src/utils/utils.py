@@ -1,5 +1,6 @@
 from os.path import split
 import cv2
+import dlib
 import numpy as np
 import re
 from src.detection.landmark.landmark import Landmark
@@ -46,8 +47,28 @@ class Utils:
 
             else: break
         cap.release()
+
+    def draw_landmarks_video(self, video_path, landmark_detector, img_size=224):
+        """ 
+        Draw landmark on a video
+        video: video path
+        landmark_detector: 
+        """
+        cap = cv2.VideoCapture(video_path)
+        if cap.isOpened() == False: print('ERROR! Cannot open video.')
         
-    def get_valences_landmarks_video(self, video_path, valences_path, frame_size, face_detector, feature_detector, k=0.5):
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if ret == True:
+                landmark_detector.draw(frame)
+
+                cv2.imshow('Frame', frame)
+                if cv2.waitKey(25) & 0xFF == ord('q'): break
+
+            else: break
+        cap.release()
+        
+    def get_valences_landmarks_video(self, video_path, valence_file_path, feature_detector, k=0.5):
         """
         Get landmarks and correspodning 
         valences for each frame in a video
@@ -55,14 +76,14 @@ class Utils:
         ret_valences, ret_features = np.empty((0,), dtype=np.uint8), np.empty((0, len(feature_detector.points*2)), dtype=np.uint32)
 
         cap = cv2.VideoCapture(video_path)
-        valences = np.loadtxt(valences_path)
+        valences = np.loadtxt(valence_file_path)
 
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
         
         while cap.isOpened():
             ret, frame = cap.read()
             if ret == True:
-                bboxes = face_detector.detect(frame, frame_size)
+                features = feature_detector.extract_features_img(frame)
                 """ 
                 Get only valences from frames s.t.
                 1. We have detected a face 
@@ -72,19 +93,17 @@ class Utils:
                 if index >= len(valences): continue # don't completely get why, is in the dataset
 
                 valence = valences[index]
-                if len(bboxes) > 0 and not( -k <= valence and valence <= k):
-                    # Get bbox with largest area
-                    x, y, w, h = bboxes[0] if len(bboxes) == 1 else bboxes[np.where(bboxes[:,2]*bboxes[:,3] == max(list(map(lambda r: r[2]*r[3], bboxes))))[0]][0]
-                    # Seath landmark features in a face
-                    img = frame[y:y+h, x:x+w]
-                    features = feature_detector.detect(img)
-                    # Check if features have been found
-                    if len(features) > 0:
-                        ret_features = np.append(ret_features, [features], axis=0)
-                        ret_valences = np.append(ret_valences, [0 if valence < 0 else 1])
+                if features.shape[0] > 0 and not( -k <= valence and valence <= k):
+                    """ 
+                    Get the largest landmark measured as the euclidean distance
+                    between the first and last point
+                    """
+                    feature = features[0] if features.shape[0] == 1 else features[np.where((features[:,0]-features[:,-2])*(features[:,0]-features[:,-2]) + (features[:,1]-features[:,-1])*(features[:,1]-features[:,-1]) == max(list(map(lambda feature: (feature[0]-feature[-2])*(feature[0]-feature[-2]) +  (feature[1]-feature[-1])*(feature[1]-feature[-1]), features))))[0]][0]
+
+                    ret_features = np.append(ret_features, [feature], axis=0)
+                    ret_valences = np.append(ret_valences, [0 if valence < 0 else 1])
                     
             else: break
 
         cap.release()
         return ret_valences, ret_features
-
