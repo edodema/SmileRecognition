@@ -1,16 +1,22 @@
-from os.path import split
 import cv2
-import dlib
 import numpy as np
-import re
-from src.detection.landmark.landmark import Landmark
-from src.detection.violajones.violajones import ViolaJones
+from src.detection.landmark import Landmark
+from src.detection.violajones import ViolaJones
 
 class Utils:
+    """
+    Support functions.
+    """
     def __init__(self): pass
     
     def play(self, path):
-        """ Play video """
+        """ 
+        Play a video 
+        
+        Input
+        -----
+        path = Video path.
+        """
         cap = cv2.VideoCapture(path)
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
         
@@ -22,12 +28,16 @@ class Utils:
             else: break
         cap.release()
 
-    def draw_bboxes_video(self, bboxes, path='datasets/affwild/videos/train/105.avi'):
+    def draw_bboxes_video(self, bboxes, path):
         """ 
-        Draw boundary boxes on a video
-        path: path of the video to play
-        bboxes: the whole list of boundary boxes frame per frame
-        NOTE: It is just too bad, is better to detect them with Viola Jones 
+        Given the boundary boxes draw them on video.
+
+        Input
+        -----
+        path: Path of the video to play.
+        bboxes: The whole list of boundary boxes frame per frame.
+
+        NOTE: Detect faces on the fly with Viola Jones
         """
         cap = cv2.VideoCapture(path)
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
@@ -37,7 +47,6 @@ class Utils:
             if ret == True:
 
                 index = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-                print(index)
                 if faces := bboxes.get(index):
                     for face in faces: cv2.rectangle(frame, tuple(face[0]), tuple(face[1]), (0,255,0), 2)
                 else: pass
@@ -48,11 +57,14 @@ class Utils:
             else: break
         cap.release()
 
-    def draw_landmarks_video(self, video_path, landmark_detector, img_size=224):
+    def draw_landmarks_video(self, video_path, landmark_detector):
         """ 
-        Draw landmark on a video
-        video: video path
-        landmark_detector: 
+        Draw landmarks on a video.
+
+        Input
+        -----
+        video_path: Path of the video.
+        landmark_detector: Landmark detector object.
         """
         cap = cv2.VideoCapture(video_path)
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
@@ -70,8 +82,19 @@ class Utils:
         
     def get_valences_landmarks_video(self, video_path, valence_file_path, feature_detector, k=0.5):
         """
-        Get landmarks and correspodning 
-        valences for each frame in a video
+        Get landmarks and corresponding valences for each frame in a video.
+
+        Input
+        -----
+        video_path: The path of the video.
+        valence_file_path: Path of the file containing the valences.
+        feature_detector: Feature detector object.
+        k: Threshold of valences' values, ones between -k and k will be ignored.
+
+        Output
+        ------
+        ret_valences: Array with filtered valences.
+        ret_features: Array with filtered landmark features.
         """
         ret_valences, ret_features = np.empty((0,), dtype=np.uint8), np.empty((0, len(feature_detector.points*2)), dtype=np.uint32)
 
@@ -82,6 +105,7 @@ class Utils:
         
         while cap.isOpened():
             ret, frame = cap.read()
+            print(ret)
             if ret == True:
                 features = feature_detector.extract_features_img(frame)
                 """ 

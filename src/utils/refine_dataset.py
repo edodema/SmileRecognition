@@ -4,11 +4,13 @@ from numpy.core.fromnumeric import sort
 import pandas as pd
 import re
 
-from pandas.core.arrays.sparse import dtype
 from src.utils.utils import Utils
 
 class RefineDataset(Utils):
-    """ Class used to refine the First Affect-in-the-Wild Challenge  dataset for our purposes """
+    """ 
+    Class used to refine the First Affect-in-the-Wild Challenge  dataset for our purposes
+    NOTE: Remove
+    """
     def __init__(self):
         super().__init__()
 

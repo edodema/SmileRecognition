@@ -1,8 +1,12 @@
+"""
+Predict svm for landmark features.
+"""
+
 import os
 import numpy as np
 import cv2
 from numpy.core.fromnumeric import shape
-from src.detection.landmark.landmark import Landmark
+from src.detection.landmark import Landmark
 
 """
 
@@ -22,6 +26,8 @@ test = np.arange(len(samples[0])).reshape(1, len(samples[0])).astype(np.float32)
 prediction = int(svm.predict(test)[1][0,0])
 
 out = 'Happy' if prediction == 1 else 'Sad'
+
+# NOTE: Check 1 -1 in svm 
 
 print(out)
 

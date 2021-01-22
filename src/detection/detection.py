@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 
 class Detection:
+    """
+    TODO: Remove
+    """
     def __init__(self): pass
 
     def detect_faces_video(self, 

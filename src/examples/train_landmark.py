@@ -1,8 +1,12 @@
+""" 
+Get landmark features and valences.
+"""
+
 import os
 import re
 import numpy as np
-from src.detection.violajones.violajones import ViolaJones
-from src.detection.landmark.landmark import Landmark
+from src.detection.violajones import ViolaJones
+from src.detection.landmark import Landmark
 from src.utils.utils import Utils
 
 img_size = 64

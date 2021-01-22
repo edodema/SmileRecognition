@@ -1,10 +1,12 @@
+"""
+Get valences and lbp values.
+NOTE: Can be removed since i decided to use landmark with svm.
+"""
+
 import os
 import cv2
 import re
 import numpy as np
-from src.utils.refine_dataset import RefineDataset
-from src.utils.utils import Utils
-from src.recognition.recognition import Recognition
 from src.detection.detection import Detection
 
 det = Detection()

@@ -1,5 +1,9 @@
+"""
+NOTE: See what it does
+"""
+
 import cv2
-from src.detection.landmark.landmark import Landmark
+from src.detection.landmark import Landmark
 
 lmk = Landmark()
 

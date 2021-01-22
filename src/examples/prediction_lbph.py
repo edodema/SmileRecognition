@@ -1,8 +1,11 @@
+"""
+Predict with LBP
+
+NOTE: Remove it since I decided to use landmarks and svm.
+"""
+
 import cv2
-import os
 import numpy as np
-from skimage.feature import local_binary_pattern
-from src.detection.detection import Detection
 
 files_path='datasets/affwild/videos/train'
 haar = 'datasets/haar/haarcascade_frontalface_default.xml'

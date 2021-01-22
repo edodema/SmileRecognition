@@ -1,5 +1,10 @@
-from src.detection.violajones.violajones import ViolaJones
-from src.detection.landmark.landmark import Landmark
+"""
+Temporary file that can be removed.
+NOTE: Use all this clutter file to get something good in a test class.
+"""
+
+from src.detection.violajones import ViolaJones
+from src.detection.landmark import Landmark
 from src.utils.utils import Utils
 
 landmark = Landmark()
