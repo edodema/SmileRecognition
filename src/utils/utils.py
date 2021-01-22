@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-from src.detection.landmark import Landmark
-from src.detection.violajones import ViolaJones
 
 class Utils:
     """
@@ -28,28 +26,24 @@ class Utils:
             else: break
         cap.release()
 
-    def draw_bboxes_video(self, bboxes, path):
+    def draw_bboxes_video(self, video_path, violajones_detector):
         """ 
         Given the boundary boxes draw them on video.
 
         Input
         -----
         path: Path of the video to play.
-        bboxes: The whole list of boundary boxes frame per frame.
-
-        NOTE: Detect faces on the fly with Viola Jones
+        haar: Haar features to detect. 
         """
-        cap = cv2.VideoCapture(path)
+        cap = cv2.VideoCapture(video_path)
         if cap.isOpened() == False: print('ERROR! Cannot open video.')
         
         while cap.isOpened():
             ret, frame = cap.read()
             if ret == True:
 
-                index = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-                if faces := bboxes.get(index):
-                    for face in faces: cv2.rectangle(frame, tuple(face[0]), tuple(face[1]), (0,255,0), 2)
-                else: pass
+                bboxes = violajones_detector.detect(frame)                
+                for x, y, w, h in bboxes: cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)
 
                 cv2.imshow('Frame', frame)
                 if cv2.waitKey(25) & 0xFF == ord('q'): break
@@ -105,7 +99,6 @@ class Utils:
         
         while cap.isOpened():
             ret, frame = cap.read()
-            print(ret)
             if ret == True:
                 features = feature_detector.extract_features_img(frame)
                 """ 
@@ -131,3 +124,31 @@ class Utils:
 
         cap.release()
         return ret_valences, ret_features
+
+    def online_violajones(self, violajones_detector):
+        """
+        Open webcam and see Viola Jones detection.
+        """
+        webcam = cv2.VideoCapture(0)
+        while True: 
+            (_, im) = webcam.read() 
+            img = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+            bboxes = violajones_detector.detect(im)   
+            for x, y, w, h in bboxes: cv2.rectangle(im, (x, y), (x+w, y+h), (0,255,0), 2)
+            
+            cv2.imshow('OpenCV', im) 
+            if cv2.waitKey(25) & 0xFF == ord('q'): break
+
+    def online_landmark(self, landmark_detector):
+        """
+        Open webcam and see landmark detection.
+        """
+        webcam = cv2.VideoCapture(0) 
+        while True: 
+            (_, im) = webcam.read() 
+            img = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+            points = landmark_detector.detect(img)
+            for x, y in points.reshape(points.size//2, 2): cv2.circle(im, (x, y), 2, (0, 255, 0), -1)
+            
+            cv2.imshow('OpenCV', im) 
+            if cv2.waitKey(25) & 0xFF == ord('q'): break
