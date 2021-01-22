@@ -1,6 +1,4 @@
-import re
 import cv2
-import numpy as np
 
 class ViolaJones():
     """
@@ -14,7 +12,7 @@ class ViolaJones():
         self.cascade = cv2.CascadeClassifier(haar)
         
         
-    def detect(self, img, img_size):
+    def detect(self, img):
         """
         Detect faces.
 
@@ -29,4 +27,4 @@ class ViolaJones():
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         bboxes = self.cascade.detectMultiScale(gray, 1.3, 5)
         return bboxes
-                    
+           

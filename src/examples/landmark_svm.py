@@ -1,14 +1,11 @@
 """
 Predict svm for landmark features.
+NOTE: Merge into the Recognition class.
 """
 
-import os
+import os, cv2
 import numpy as np
-import cv2
-from numpy.core.fromnumeric import shape
 from src.detection.landmark import Landmark
-
-"""
 
 det = Landmark()
 
@@ -32,7 +29,7 @@ out = 'Happy' if prediction == 1 else 'Sad'
 print(out)
 
 svm.save('datasets/svm_landmark.yml')
-"""
+
 samples = np.loadtxt('datasets/features_landmark.txt', dtype=np.float32)
 test = np.arange(len(samples[0])).reshape(1, len(samples[0])).astype(np.float32)
 
