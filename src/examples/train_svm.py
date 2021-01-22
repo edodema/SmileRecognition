@@ -1,6 +1,9 @@
+"""
+Train svm classifier with landmark features.
+"""
+
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy.lib import histograms
 import pandas as pd
 
