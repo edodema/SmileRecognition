@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-class RecognitionSVM():
+class Recognition():
     """
     Emotion recognition through a SVM classifier.
     """
@@ -21,6 +21,8 @@ class RecognitionSVM():
         """
         samples = np.loadtxt(samples_path, dtype=np.float32)
         responses = np.loadtxt(responses_path).astype(int)
+        print(samples.shape)
+        print(responses.shape)
         
         svm = cv2.ml.SVM_create()
         svm.setType(cv2.ml.SVM_C_SVC)
@@ -32,7 +34,9 @@ class RecognitionSVM():
 
     def predict(self, svm, landmark):
         """
-        Predict the value of a landmark encoding.
+        Subroutine to predict the value of a landmark encoding.
+        NOTE: First the SVM needs to be trained
+
 
         Input
         -----
@@ -43,8 +47,23 @@ class RecognitionSVM():
         ------
         prediction: The prediction of the SVM.
         """
-        test = landmark.reshape((1, len(landmark)))
-        
-        # NOTE: First the SVM needs to be trained
+        test = landmark.astype(np.float32).reshape(1, len(landmark))
         prediction = int(svm.predict(test)[1][0,0])
         return prediction
+
+    def load(self, svm_path):
+        """
+        Predict the value of a landmark encoding.
+
+        Input
+        -----
+        svm_path: Path for the SVM object for detection.
+
+        Output
+        ------
+        svm: The loaded SVM object.
+        """
+        svm = cv2.ml.SVM_create()
+        svm = svm.load(svm_path)
+        
+        return svm
