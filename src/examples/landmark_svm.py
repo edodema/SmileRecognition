@@ -1,6 +1,7 @@
 """
 Predict svm for landmark features.
 NOTE: Merge into the Recognition class.
+NOTE: Probably can be deleted.
 """
 
 import os, cv2
