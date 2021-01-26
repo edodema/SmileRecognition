@@ -1,8 +1,7 @@
 from sklearn.model_selection import train_test_split
+from sklearn import metrics
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-from src.recognition.recognition import Recognition
 
 class Test:
     """
@@ -29,6 +28,41 @@ class Test:
 
         return X_train, X_test, y_train, y_test
 
-if __name__ == '__main__':
-    samples_path = 'datasets/features_landmark_complete.txt'
-    labels_path = 'datasets/valences_landmark_complete.txt'
+    def plot_roc(self, fpr, tpr):
+        """
+        Plot ROC curve
+
+        input
+        -----
+        fpr: False positive rate of predictions.
+        tpr: True positive rate of predictions.
+
+        NOTE: https://www.codespeedy.com/how-to-plot-roc-curve-using-sklearn-library-in-python/
+        """  
+        plt.plot(fpr, tpr, color='orange', label='ROC')
+        plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend()
+        plt.show()
+
+    
+    def metric_roc(self, prediction):
+        """
+        Plot ROC curve and measure AUROC
+
+        input
+        -----
+        prediction: A list of test data.
+
+        output
+        ------
+        fpr: False positive rate of predictions.
+        tpr: True positive rate of predictions.
+        auc: AUC.
+        ths: Thresholds.
+        """
+        fpr, tpr, ths = metrics.roc_curve(self.__y_test, prediction) 
+        auc = metrics.auc(fpr, tpr)
+        return fpr, tpr, auc, ths
