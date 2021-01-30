@@ -4,7 +4,6 @@ Get landmark features and valences, by default the whole directory is explored.
 
 import os, re, fire
 import numpy as np
-from src.detection.violajones import ViolaJones
 from src.detection.landmark import Landmark
 from src.utils.utils import Utils
 
