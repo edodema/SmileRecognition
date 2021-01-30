@@ -9,7 +9,7 @@ class ViolaJones():
     haar: Path of the Haar features' file.
     """
     def __init__(self, haar ='datasets/haar/haarcascade_frontalface_default.xml'):
-        self.cascade = cv2.CascadeClassifier(haar)
+        self.__cascade = cv2.CascadeClassifier(haar)
         
         
     def detect(self, img):
@@ -25,6 +25,6 @@ class ViolaJones():
         bboxes: Bounding boxes of detected faces.
         """
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        bboxes = self.cascade.detectMultiScale(gray, 1.3, 5)
+        bboxes = self.__cascade.detectMultiScale(gray, 1.3, 5)
         return bboxes
            

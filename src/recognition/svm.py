@@ -22,10 +22,9 @@ class SVM():
         else:
             assert (not linear) and degree > 1,  "A polynomial function needs degree higher than 0."
 
-
-        self.type = type
-        self.linear = linear
-        self.degree = degree
+        self.__type = type
+        self.__linear = linear
+        self.__degree = degree
 
     def train_svm(self, samples_path, responses_path, output_path):
         """
@@ -43,17 +42,17 @@ class SVM():
         samples = np.loadtxt(samples_path, dtype=np.float32)
         responses = np.loadtxt(responses_path).astype(int)
         
-        if self.type == 'cv2': 
+        if self.__type == 'cv2': 
             # The SVM is a OpenCV one
             svm_cv2 = cv2.ml.SVM_create()
             svm_cv2.setType(cv2.ml.SVM_C_SVC)
-            svm_cv2.setKernel(cv2.ml.SVM_LINEAR) if self.linear else svm.setKernel(cv2.ml.SVM_POLY)
-            svm_cv2.setDegree(self.degree)
+            svm_cv2.setKernel(cv2.ml.SVM_LINEAR) if self.__linear else svm.setKernel(cv2.ml.SVM_POLY)
+            svm_cv2.setDegree(self.__degree)
             svm_cv2.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
             svm_cv2.train(samples, cv2.ml.ROW_SAMPLE, responses)
             svm_cv2.save(output_path)
 
-        elif self.type == 'skl': 
+        elif self.__type == 'skl': 
             # The SVM is a Sklearn one
             svm_skl = svm.SVC()
             svm_skl.fit(samples, responses)
@@ -97,11 +96,11 @@ class SVM():
         """
         svm = None
         
-        if self.type == 'cv2': 
+        if self.__type == 'cv2': 
             # The SVM is a OpenCV one
             svm = cv2.ml.SVM_create().load(svm_path)
 
-        elif self.type == 'skl': 
+        elif self.__type == 'skl': 
             # The SVM is a Sklearn one
             svm = joblib.load(svm_path)
 

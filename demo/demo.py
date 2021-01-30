@@ -2,7 +2,6 @@ import cv2, fire
 import numpy as np
 from src.detection.violajones import ViolaJones
 from src.detection.landmark import Landmark
-from src.utils.utils import Utils
 from src.recognition.svm import SVM
 
 class Demo:
@@ -11,11 +10,10 @@ class Demo:
     NOTE: Change SVM with the sklearn one.
     """
     
-    def __init__(self, recognition, utils=Utils(), violajones=ViolaJones(), landmark=Landmark()):
-        self.utils = utils
-        self.violajones = violajones
-        self.landmark = landmark
-        self.recognition = recognition
+    def __init__(self, recognition, violajones=ViolaJones(), landmark=Landmark()):
+        self.__violajones = violajones
+        self.__landmark = landmark
+        self.__recognition = recognition
 
     def exec(self, svm_path):
         """
@@ -25,7 +23,7 @@ class Demo:
         -----
         svm_path: Path of the SVM trained model.
         """
-        svm = self.recognition.load(svm_path)
+        svm = self.__recognition.load(svm_path)
 
         webcam = cv2.VideoCapture(0)
         
@@ -33,11 +31,11 @@ class Demo:
             (_, im) = webcam.read() 
             img = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
             
-            bboxes = self.violajones.detect(im)
+            bboxes = self.__violajones.detect(im)
             if len(bboxes) > 0:
-                test = self.landmark.detect(img)
+                test = self.__landmark.detect(img)
                 if test.shape[0] > 0: 
-                    value = self.recognition.predict(svm, test.reshape(1, 64).astype(np.float32))[0]
+                    value = self.__recognition.predict(svm, test.reshape(1, 64).astype(np.float32))[0]
                     color = (0, 255, 0) if value == 1 else (0, 0, 255)
                     
                     for x, y in test.reshape(test.size//2, 2): cv2.circle(im, (x, y), 2, color, -1) # Draw landmarks
