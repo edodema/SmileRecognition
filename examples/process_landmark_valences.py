@@ -14,7 +14,6 @@ features_output='datasets/features_landmark.txt', valences_output='datasets/vale
     utils = Utils()
     landmark = Landmark()
     
-    # Hardcoded :(
     dataset_size = len(os.listdir(videos_dir))
     end = int(training_perc * dataset_size)
 
