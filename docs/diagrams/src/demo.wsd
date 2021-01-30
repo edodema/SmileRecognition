@@ -1,0 +1,11 @@
+@startuml classes
+package demo.demo <<Rectangle>> {
+    class Demo {
+        - violajones
+        - landmark
+        - recognition
+        - init()
+        + exec()
+    }
+}
+@enduml

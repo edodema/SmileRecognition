@@ -1,0 +1,64 @@
+@startuml classes
+
+package src <<Rectangle>> {
+    package detection <<Rectangle>> {
+        class Landmark {
+            - face_detector
+            - landmark_detector
+            - points
+            - init()
+            + detect()
+            + extract_features()
+            + extract_features_img()
+            + draw()
+        }
+        class ViolaJones {
+            - cascade
+            - init()
+            + detect()
+        }
+    }
+
+    package recognition <<Rectangle>> {
+        class SVM {
+            - type
+            - linear
+            - degree 
+            - init()
+            + train_svm()
+            + predict()
+            + load()
+        }
+    }
+
+    package test <<Rectangle>> {
+        class Test {
+            - X
+            - y
+            - X_train
+            - X_test
+            - y_train
+            - y_test
+            - init()
+            + split_dataset()
+            + plot_roc()
+            + metric_roc() 
+        }
+    }
+
+    package utils <<Rectangle>> {
+        class Utils {
+            - init()
+            + play()
+            + draw_bboxes_video()
+            + draw_landmarks_video()
+            + get_valences_landmarks_video()
+            + online_violajones()
+            + online_landmark()
+        }
+    }
+}
+
+detection -[hidden]-> test
+detection -[hidden]-> utils
+@enduml

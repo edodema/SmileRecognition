@@ -8,23 +8,23 @@ class Test:
     Implements tests for the datasets.
     """
     def __init__(self, samples_path, labels_path): 
-        self.__X = np.loadtxt(samples_path, dtype=np.float32)
-        self.__y = np.loadtxt(labels_path).astype(int)
-        self.__X_train = []
-        self.__X_test = []
-        self.__y_train = []
-        self.__y_test = []
+        self.X = np.loadtxt(samples_path, dtype=np.float32)
+        self.y = np.loadtxt(labels_path).astype(int)
+        self.X_train = []
+        self.X_test = []
+        self.y_train = []
+        self.y_test = []
 
     def split_dataset(self, test_size=0.2, random_state=42):
         """
         Split dataset in train and test.
         """
-        X_train, X_test, y_train, y_test = train_test_split(self.__X, self.__y, test_size=test_size, random_state=random_state)
+        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=test_size, random_state=random_state)
 
-        self.__X_train = X_train
-        self.__X_test = X_test
-        self.__y_train = y_train
-        self.__y_test = y_test
+        self.X_train = X_train
+        self.X_test = X_test
+        self.y_train = y_train
+        self.y_test = y_test
 
         return X_train, X_test, y_train, y_test
 
@@ -63,6 +63,6 @@ class Test:
         auc: AUC.
         ths: Thresholds.
         """
-        fpr, tpr, ths = metrics.roc_curve(self.__y_test, prediction) 
+        fpr, tpr, ths = metrics.roc_curve(self.y_test, prediction) 
         auc = metrics.auc(fpr, tpr)
         return fpr, tpr, auc, ths

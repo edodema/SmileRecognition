@@ -8,7 +8,7 @@ from src.detection.landmark import Landmark
 from src.utils.utils import Utils
 
 def main(training_perc=1, videos_dir='datasets/affwild/videos/train', valences_dir='datasets/affwild/annotations/train/valence',
-features_output='datasets/features_landmark.txt', valences_output='datasets/valences_landmark.txt'):
+features_output='datasets/landmarks.txt', valences_output='datasets/valences.txt'):
     assert 0 <= training_perc and training_perc <= 1, "The percentage of the training set size must be between 0 and 1."
 
     utils = Utils()

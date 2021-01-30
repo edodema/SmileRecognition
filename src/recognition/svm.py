@@ -37,7 +37,6 @@ class SVM():
         output_path: Path of the output file where the SVM will be saved.
 
         NOTE: samples are landmarks and responses are valences.
-        TODO: This has to cover both cv2 and sklearn
         """
         samples = np.loadtxt(samples_path, dtype=np.float32)
         responses = np.loadtxt(responses_path).astype(int)
