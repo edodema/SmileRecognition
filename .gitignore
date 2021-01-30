@@ -412,5 +412,5 @@ TSWLatexianTemp*
 # Custom 
 .DS_Store
 .vscode
-datasets
-!datasets/data.csv
+datasets/*
+!datasets/misc.tar.xz
