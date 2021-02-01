@@ -7,7 +7,7 @@ class SVM():
     """
     Emotion recognition through a SVM classifier.
     """
-    def __init__(self, type, linear=True, degree=1):
+    def __init__(self, type, kernel='0', degree=1):
         """
         Instantiate a SVM
 
@@ -16,14 +16,13 @@ class SVM():
         type: The tyoe of SVM, can be cv2 if the OpenCV or skl if Sklearn type.
         """
         assert type == 'cv2' or type == 'skl', "SVM type has to be 'cv2' or 'skl'."
-        
-        if linear:
-            assert linear and degree == 1 , "If the function is linear the degree should be 1."
-        else:
-            assert (not linear) and degree > 1,  "A polynomial function needs degree higher than 0."
 
+        if kernel == '0': assert degree == 1 , "If the function is linear the degree should be 1."
+        elif kernel == '1': assert degree > 1,  "A polynomial function needs degree higher than 0."
+
+        kernels = {'0':cv2.ml.SVM_LINEAR, '1':cv2.ml.SVM_POLY, '2':cv2.ml.SVM_RBF}
         self.__type = type
-        self.__linear = linear
+        self.__kernel = kernels[kernel]
         self.__degree = degree
 
     def train_svm(self, samples_path, responses_path, output_path):
@@ -41,11 +40,11 @@ class SVM():
         samples = np.loadtxt(samples_path, dtype=np.float32)
         responses = np.loadtxt(responses_path).astype(int)
         
-        if self.__type == 'cv2': 
+        if self.__type == 'cv2':
             # The SVM is a OpenCV one
             svm_cv2 = cv2.ml.SVM_create()
             svm_cv2.setType(cv2.ml.SVM_C_SVC)
-            svm_cv2.setKernel(cv2.ml.SVM_LINEAR) if self.__linear else svm.setKernel(cv2.ml.SVM_POLY)
+            svm_cv2.setKernel(self.__kernel)
             svm_cv2.setDegree(self.__degree)
             svm_cv2.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
             svm_cv2.train(samples, cv2.ml.ROW_SAMPLE, responses)
