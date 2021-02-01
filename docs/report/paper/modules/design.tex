@@ -5,7 +5,7 @@ Each valence ranges from -1 to 1, I explicitly ignored valences $v$ such that $-
 Is possible for a single frame to contain more than a face as seen in figure \ref{fig:double_face} \footnote{I find bounding boxes less invasive, in this case landmark detects two faces as well.}.
 Since the affwild datasets collects videos with foreground faces is reasonable to assume that the face we're interested in is the widest one, hence I pick the one with the largest euclidean distance between the first and last point of the feature points (respectively the lateral commissure of the viewer's left eye and the lower lip).
 
-\begin{figure}
+\begin{figure}[h!t]
     \centering
     \includegraphics[scale=0.4]{images/309mp4_double_face.png}
     \caption{Two faces detected in the video 309.}
@@ -26,10 +26,9 @@ Both bounding boxes and landmark points were detected through pretained models ~
 
 The general structure of classes and packages that were defined can be seen in figure \ref{fig:packages_diagram}, it is all original code except the function \textcode{src.test.Test.plot\_roc} used to plot ROC curves. It has been taken from \href{https://www.codespeedy.com/how-to-plot-roc-curve-using-sklearn-library-in-python/}{here} as commented in the source code.
 
-\begin{figure}
+\begin{figure}[h!t]
     \centering
-    \includegraphics[scale=0.55]{../../diagrams/out/src/classes.png}
-    \includegraphics[scale=0.55]{../../diagrams/out/demo/classes.png}
+    \includegraphics[scale=0.49]{../../diagrams/out/classes/classes.png}
     \caption{Diagram of the packages.}
     \label{fig:packages_diagram}
 \end{figure}
