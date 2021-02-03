@@ -1,37 +1,26 @@
 \section{Performance evaluation}
-The SVM classifier implemented in the scikit-learn library uses a RBF kernel (equation \ref{eq:rbf}) while in OpenCV is possible to choose which kernel and eventually the degree of the model. 
+The SVM classifier implemented in the scikit-learn library uses a RBF kernel (equation \ref{eq:rbf}), on the other hand in OpenCV is possible to choose which kernel to use and eventually the degree of the model. 
 
 \begin{equation} \label{eq:rbf}
     K(x,x') = \exp \left(\frac{||x-x'||^2}{2\sigma^2}\right)
 \end{equation}
 
-The scikit-learn classifier offers the best performances, in figure \ref{fig:confusion} is possible to see the confusion matrices for both this classifier and the RBF OpenCV one. 
+Comparing these two classifiers with the same kernel the scikit-learn's one offers better performances, in figure \ref{fig:confusion} are displayed the confusion matrices for both of them and in table \ref{tab:scores} relative scores. 
 
 \begin{figure}[h!t]
     \centering
-    \begin{subfigure}{.4\textwidth}
-        \includegraphics[scale=0.29]{images/confusion_skl.png}
-        \caption{Confusion matrix for \textit{scikit-learn}.}
-        \label{fig:confusion_skl}
-    \end{subfigure}
-    ~
-    \begin{subfigure}{.4\textwidth}
-        \includegraphics[scale=0.29]{images/confusion_cv2.png}
-        \caption{Confusion matrix for \textit{scikit-learn}.}
-        \label{fig:confusion_cv2}
-    \end{subfigure}
+    \includegraphics[scale=0.6]{images/confusion_skl.png}
+    \includegraphics[scale=0.6]{images/confusion_cv2.png}
     \caption{Confusion matrices.}
     \label{fig:confusion}
 \end{figure}
-
-The scores obtained are collected on table \ref{tab:scores}.
 
 \begin{table}[h!t]
     \centering
     \caption{Scores for the classifiers.}
     \label{tab:scores}
     \begin{tabular}{lcc}
-        & scikit & OpenCV \\
+        & scikit-learn & OpenCV \\
         Accuracy & 0.805 & 0.491 \\
         Precision & 0.814 & 0.421 \\
         Recall & 0.639 & 0.860 \\
@@ -39,17 +28,14 @@ The scores obtained are collected on table \ref{tab:scores}.
     \end{tabular}
 \end{table}
 
-In images \ref{fig:roc} are plotted the ROC curves for the scikit-learn SVM classifier and OpenCV ones with linear, 3-degree polynomial and RBF kernels. 
+They're not particularly good, except maybe accuracy and precisione, but is clear how scikit-learn's classifier is more balanced. 
+Even in recall, where OpenCV performs better, the difference is less significant than when scikit-learn is better.
 
-\begin{figure}[h!t]
-    \centering
-    \includegraphics[scale=0.25]{images/roc.png}
-    \caption{ROC.}
-    \label{fig:roc}
-\end{figure}
+In image \ref{fig:roc} the ROC curves for the scikit-learn SVM classifier and OpenCV ones are plotted.
+For OpenCV where considered three different classifiers: a linear one, a polynomial one with degree 3 and for comparision an RBF one.
 
-The polynomial one has terrible performances, is like throwing chances \footnote{has an AUC of 0.5}, while the linear and rbf ones overlap each other with quite better performances.
-Still the best performing one is the scikit-learn with a rbf kernel, on table \ref{tab:auc} are displayed the AUCs.
+The polynomial kernel one has terrible performances, is like throwing chances \footnote{With an AUC of 0.5}, while the linear and RBF ones overlap each other with quite better performances.
+Again the best performing classifier is the scikit-learn with a RBF kernel, the AUCs are displayed in table \ref{tab:auc}.
 
 \begin{table}[h!t]
     \centering
@@ -61,7 +47,18 @@ Still the best performing one is the scikit-learn with a rbf kernel, on table \r
     \end{tabular}
 \end{table}
 
-On figure \ref{fig:det} are plotted the DET curves for only the scikit classifier and the OpenCV one, both with rbf kernel. 
+Also the DET curves for the scikit-learn and OpenCV, both with the RBF kernel, were plot in figure \ref{fig:det} and again the scikit-learn model is better than the OpenCV one.
+
+On figure \ref{fig:eet} are plotted the false positive (i.e. false genuine) error rate and the false negative (i.e. false rejection) one, the intersection point is the equal error rate (EER) and the ideal threshold seems to be 1.25.
+Keep in mind that these two error rates are plotted against only three thresholds so this value does not necessarly match the best threshold. 
+The EET is identified only for the scikit-learn SVM since it is the best model so far.
+
+\begin{figure}[h!t]
+    \centering
+    \includegraphics[scale=0.25]{images/roc.png}
+    \caption{ROC.}
+    \label{fig:roc}
+\end{figure}
 
 \begin{figure}[h!t]
     \centering
@@ -70,9 +67,6 @@ On figure \ref{fig:det} are plotted the DET curves for only the scikit classifie
     \label{fig:det}
 \end{figure}
 
-On figure \ref{fig:eet} are plotted the false positive (i.e. false genuine) error rate and the false negative (i.e. false rejection) one, the intersection point is the equal error rate (EER), the ideal threshold seems to be 1.25.
-Keep in mind that these two error rates are plotted against only three thresholds so this value is not necessary true. 
-The EET is identified only for the scikit-learn SVM since it is the best model so far, for this same reason the online demo uses it.
 
 \begin{figure}[h!t]
     \centering
