@@ -1,10 +1,10 @@
 \section{Strategy}
-To recognize a facial expression first is needed to find a face in an image, in the online demo it is achieved through Viola Jones while on training and test sets face recognition is automatically done by \textit{Dlib}'s landmark detection.
+Before recognizing a facial expression a face is needed, in the online demo facial detection is achieved through haar cascade classifiers while in offline developing it was done automatically by \textit{Dlib}'s landmark detection.
 To extract features at first I considered using LBP histograms but since I was interested only in facial expressions seemed reasonable to use landmark points. 
 The key idea is that assuming that similiar expressions have a similiar position on different faces then through an SVM classifier it could be possible to predict someone's "emotion" \footnote{As said earlier someone's emotions are more deep than just their facial expression.}.
-In figure \ref{fig:landmarks} is displayed how landmark points are disposed in the used landmark pretrained model, for our purposes were not considered all points but only those defining eyes and the mouth (i.e. points from 37 to 68).
-Still is possible for the user to define an arbitrary list of points.
-I'm aware that this approach is not the state of the art and to get good results is reccomended to use neural networks ~\cite{blog:emotion}, anyway I was interested in using SVM classifiers and how they would perform.
+In figure \ref{fig:landmarks} is displayed how landmark points are disposed in the pretrained model, for our purposes were not considered all points but only those defining eyes and the mouth (i.e. points from 37 to 68).
+Is possible for the user to define an arbitrary list of points and the algorithm will locate them.
+I'm aware that this approach is not the state of the art and to get good results is reccomended to use neural networks ~\cite{blog:emotion}, anyway I was interested in using SVM classifiers and see how they would perform.
 
 \begin{figure}[h!t]
     \centering

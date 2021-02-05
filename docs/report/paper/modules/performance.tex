@@ -28,13 +28,13 @@ Comparing these two classifiers with the same kernel the scikit-learn's one offe
     \end{tabular}
 \end{table}
 
-They're not particularly good, except maybe accuracy and precisione, but is clear how scikit-learn's classifier is more balanced. 
-Even in recall, where OpenCV performs better, the difference is less significant than when scikit-learn is better.
+They're not particularly good, except maybe accuracy and precision, but is clear how scikit-learn's classifier is more balanced. 
+Even in recall, where OpenCV performs better, the difference is less significant than the cases in which scikit-learn is better.
 
 In image \ref{fig:roc} the ROC curves for the scikit-learn SVM classifier and OpenCV ones are plotted.
-For OpenCV where considered three different classifiers: a linear one, a polynomial one with degree 3 and for comparision an RBF one.
+For OpenCV where considered three different classifiers: a linear one, a polynomial one with degree 3 and, for comparision, an RBF one.
 
-The polynomial kernel one has terrible performances, is like throwing chances \footnote{With an AUC of 0.5}, while the linear and RBF ones overlap each other with quite better performances.
+The polynomial one has terrible performances, is like throwing chances \footnote{With an AUC of 0.5}, while the linear and RBF ones overlap each other with quite better performances.
 Again the best performing classifier is the scikit-learn with a RBF kernel, the AUCs are displayed in table \ref{tab:auc}.
 
 \begin{table}[h!t]
@@ -66,7 +66,6 @@ The EET is identified only for the scikit-learn SVM since it is the best model s
     \caption{DET.}
     \label{fig:det}
 \end{figure}
-
 
 \begin{figure}[h!t]
     \centering
