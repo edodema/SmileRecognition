@@ -1,0 +1,29 @@
+\section{Strategy}
+To recognizing a facial expression first a face is needed, in the online demo facial detection is achieved through Haar cascade classifiers while in offline developing it has been done automatically by \textit{Dlib}'s landmark detection.
+To extract features at first I considered using LBP histograms but since I was interested only in facial expressions it seemed reasonable to use landmark points. 
+The key idea is that similiar expressions have a similiar position on different faces, then through an SVM classifier it could be possible to predict someone's "emotion" \footnote{As said earlier someone's emotions are more deep than just their facial expression.}.
+In figure \ref{fig:landmarks} is displayed how landmark points are disposed in the pretrained model ~\cite{dataset:landmark}, for our purposes we're not considering all points but only ones defining the eyes and the mouth (i.e. points from 37 to 68); it is possible for the user to define an arbitrary list of points and the algorithm will locate them.
+I'm aware that this approach is not the state of the art and that to get good results is reccomended to use neural networks ~\cite{blog:emotion}, anyway I was interested in using SVM classifiers and seeing how they would perform.
+
+\begin{figure}[h!t]
+    \centering
+    \includegraphics[scale=0.2]{images/landmark.png}
+    \caption{Face landmark points from ~\cite{landmark:guide}.}
+    \label{fig:landmarks}
+\end{figure}
+
+The adopted dataset is the \textit{First Affect-in-the-Wild} (affwild) ~\cite{dataset:affwild}, it consists of 298 videos of which 252 for training and 46 for testing.
+I ignored videos in the train set since there are no responses associated, such responses are defined for each frame in which a face is identified.
+In the dataset are stored bounding boxes too but since I was interested in landmark points, and the detection is done by \textit{Dlib} I just discarded them.
+
+Emotions are defined as points on a two dimensional cartesian plane where the abscissa is the \textit{valence}, it expresses if an emotion is positive or negative, and the ordinate is the \textit{arousal}, it discriminates animated emotions from languid ones.
+An example of this plane can be seen in figure \ref{fig:emotion_classification}, in which 4 different emotions are defined but is possible to have more.
+To avoid possible performance reduction due to discrimination between too many classes, and considering also that SVMs in their purest form are binary classifiers, it came natural to me to just consider only one response.
+I chose valence since it may be more interesting to distinguish between positive and negative expressions rather than exciting or not ones.
+
+\begin{figure}[h!t]
+    \centering
+    \includegraphics[scale=0.45]{images/emotion-classification.png}
+    \caption{Emotion classification model from ~\cite{emotion_classification}.}
+    \label{fig:emotion_classification}
+\end{figure}
