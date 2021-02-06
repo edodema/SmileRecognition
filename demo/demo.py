@@ -45,7 +45,7 @@ class Demo:
             if cv2.waitKey(25) & 0xFF == ord('q'): break
 
 if __name__ == '__main__':
-    svm_path = 'datasets/svm.pkl'
+    svm_path = 'datasets/processed/svm.pkl'
 
     recognition = SVM('skl')
 
