@@ -17,6 +17,10 @@ class Landmark():
         self.__points = points
 
 
+    def get_points(self):
+        """ Simply return points """
+        return self.__points
+
     def detect(self, img):
         """ 
         Detect landmark points on an image.

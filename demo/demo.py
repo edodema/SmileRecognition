@@ -4,6 +4,8 @@ from src.detection.violajones import ViolaJones
 from src.detection.landmark import Landmark
 from src.recognition.svm import SVM
 
+# NOTE: Would be nice to change 64 to half the size of the landmark points
+
 class Demo:
     """
     Online demo.
@@ -14,6 +16,7 @@ class Demo:
         self.__violajones = violajones
         self.__landmark = landmark
         self.__recognition = recognition
+        self.__n = len(landmark.get_points()) * 2 # Length used for array reshaping 
 
     def exec(self, svm_path):
         """
@@ -33,9 +36,9 @@ class Demo:
             
             bboxes = self.__violajones.detect(im)
             if len(bboxes) > 0:
-                test = self.__landmark.detect(img)
-                if test.shape[0] > 0: 
-                    value = self.__recognition.predict(svm, test.reshape(1, 64).astype(np.float32))[0]
+                test = self.__landmark.detect(img)[0:self.__n]
+                if test.shape[0] > 0:
+                    value = self.__recognition.predict(svm, test.reshape(1, self.__n).astype(np.float32))[0]
                     color = (0, 255, 0) if value == 1 else (0, 0, 255)
                     
                     for x, y in test.reshape(test.size//2, 2): cv2.circle(im, (x, y), 2, color, -1) # Draw landmarks
