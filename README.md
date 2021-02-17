@@ -11,6 +11,3 @@ To run the demo extract the archive datasets/processed.tar.xz and then execute f
 ```
 $ python -m demo.demo
 ```
-
-## Warning
-To execute the notebook in the examples folder first move it in the root folder.
