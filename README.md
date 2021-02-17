@@ -1,5 +1,7 @@
 # SmileRecognition
 Simple and not cudding edge face recognition system that discriminates between happy and sad expressions.
+For a correct smile detection keep in mind the influence of pose, illumination and distance from the camera (20cm should suffice). 
+If possible take off glasses and collect hair.
 
 ## Downloads
 - [Dataset.](https://ibug.doc.ic.ac.uk/resources/first-affect-wild-challenge/) Extract it in the *dataset* folder and rename the folder *affwild*.
